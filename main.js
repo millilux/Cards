@@ -1,3 +1,5 @@
+"use strict";
+
 let PONTOON = require('./pontoon.js');
 
 let player1 = new PONTOON.Player("Mike");
