@@ -14,6 +14,14 @@ Math.lerp = function (a, b, t) {
     return (1-t)*a + t*b;
 };
 
+Math.map = function(value, inputMin, inputMax, outputMin, outputMax){
+     return ((value - inputMin) / (inputMax - inputMin) * (outputMax - outputMin) + outputMin);
+}
+
+Math.clamp = function(value, min, max){
+    return Math.min(Math.max(value, min), max);
+}
+
 // Classes
 class Card {
     constructor(rank, suit){
