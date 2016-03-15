@@ -18,8 +18,8 @@ class Player {
             return Move.BUST;
         }
 
-        let risk = Math.lerp(15/21, 1, this.score/21);  // As the score gets closer to 21, less risk should be taken
-        if (this.score <= 15 || Math.random() < this.riskiness)
+        let risk = 1 - Math.clamp(Math.map(this.score, 15, 21, 0, 1), 0, 1); // As the score gets closer to 21, less risk should be taken
+        if (this.score <= 15 || Math.random() < this.riskiness * risk)
             return Move.TWIST;
 
         if (this.score >= 15){
@@ -140,7 +140,6 @@ class Pontoon {
         this.players = [this.dealer].concat(players);
         this.minStake = 1;
         this.maxStake = 100;
-        //this.newDeal();
     }
 
     play(){
@@ -149,18 +148,12 @@ class Pontoon {
         console.log(this.toString());
         console.log("Pre-game stakes: " + this.players.map(p => p.name + ": " + p.stake).join(", "));
 
-        // TODO: remove: just for testing pontoon
-        //this.dealer.hand.cards[0] = new Card(Rank.JACK, Suit.HEARTS);
-        //this.dealer.hand.cards[1] = new Card(Rank.ACE, Suit.HEARTS);
-
         if (this.dealer.hand.isPontoon()){
-            // Dealer collects double from all players
-            this.players.forEach((player) => {
-                player.pay(this.dealer, 2);
-            });
-            // TODO: end round
+            // Special case where dealer starts outright with Pontoon. Dealer collects double from all players.
+            this.players.forEach((player) => player.pay(this.dealer, 2));
             this.winners.push(this.dealer);
         } else {
+            // Play commences as normal
             this.playersTurns();
             // TODO: does dealer need to go last? Seems to amount to the same thing minus flashy ritual
             this.payout();
