@@ -1,5 +1,8 @@
 "use strict";
 
+var CARDS = require("./cards.js");
+const Rank = CARDS.Rank;
+
 const Move = Object.freeze({ PONTOON: "Pontoon", TWIST: "Twist", STICK: "Stick", BUST: "Bust" });
 
 class Player {
@@ -48,7 +51,7 @@ class Player {
 class Dealer extends Player {
     constructor(){
         super("Dealer", 0);
-        this.deck = new Deck();
+        this.deck = new CARDS.Deck();
         this.deck.shuffle();
     }
 
@@ -245,3 +248,5 @@ class Pontoon {
         return this.players.join(" | ");
     }
 }
+
+module.exports = { Game : Pontoon, Player: Player };

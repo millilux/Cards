@@ -3,7 +3,6 @@
 // Enums
 const Suit = Object.freeze({ HEARTS: "Hearts", DIAMONDS: "Diamonds", CLUBS: "Clubs", SPADES: "Spades"});
 const Rank = Object.freeze({ JOKER: "Joker", ACE: "Ace", 2: 2, 3: 3, 4: 4, 5: 5, 6: 6, 7: 7, 8: 8, 9: 9, 10: 10, JACK: "Jack", QUEEN: "Queen", KING: "King" });
-const Aces = Object.freeze({ LOW: 1, HIGH: 2, BOTH: 3 });
 
 // Utils
 Math.randomInt = function (min, max){
@@ -97,4 +96,4 @@ class Deck {
     }
 }
 
-//module.exports = { Deck = Deck, Card = Card };
+module.exports = { Deck : Deck, Card : Card, Suit : Suit, Rank : Rank };
