@@ -10,6 +10,10 @@ Math.randomInt = function (min, max){
     return Math.floor(Math.random()*(max-min+1)+min);
 };
 
+Math.lerp = function (a, b, t) {
+    return (1-t)*a + t*b;
+};
+
 // Classes
 class Card {
     constructor(rank, suit){
@@ -64,11 +68,25 @@ class Deck {
         return card;
     }
 
+    shift(){
+        let card = this.cards.shift();
+        if (card === undefined){
+            throw new Error("Deck is empty");
+        }
+        return card;        
+    }
+
+    append(card){
+        this.cards.push(card);
+    }
+
+    prepend(card){
+        this.cards.unshift(card);
+    }
+
     toString() {
-        return this.cards
-            .map(c => c.toString())
-            .join(", ");
+        return this.cards.join(", ");
     }
 }
 
-//export { Deck, Card };
+//module.exports = { Deck = Deck, Card = Card };
