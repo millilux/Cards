@@ -1,6 +1,6 @@
-jest.unmock('../cards');
+jest.unmock('../lib/cards');
 
-const cards = require('../cards');
+const cards = require('../lib/cards');
 const Suit = cards.Suit;
 const Rank = cards.Rank;
 

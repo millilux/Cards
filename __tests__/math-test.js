@@ -1,8 +1,8 @@
-jest.unmock('../math');
+jest.unmock('../lib/math');
+
+const math = require('../lib/math');
 
 describe('clamp', () => {
-    const math = require('../math');
-
     it('clamps 4 to 1 in the range 0-1', () => {
         expect(math.clamp(4, 0, 1)).toBe(1);
     });
@@ -18,8 +18,6 @@ describe('clamp', () => {
 
 
 describe('lerp', () => {
-    const math = require('../math');
-
     it('lerps halfway between 0-100', () => {
         expect(math.lerp(0, 100, 0.5)).toBe(50);
     });
