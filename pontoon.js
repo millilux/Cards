@@ -1,8 +1,8 @@
 "use strict";
 
-let CARDS = require("./cards.js");
+let cards = require("./cards.js");
 let math = require("./math.js");
-const Rank = CARDS.Rank;
+const Rank = cards.Rank;
 
 const Move = Object.freeze({ PONTOON: "Pontoon", TWIST: "Twist", STICK: "Stick", BUST: "Bust" });
 
@@ -37,7 +37,7 @@ class Player {
     }
 
     receiveCard(card){
-        this.hand.addCard(card);
+        this.hand.append(card);
     }
 
     get score(){
@@ -52,8 +52,8 @@ class Player {
 class Dealer extends Player {
     constructor(){
         super("Dealer", 0);
-        this.deck = new CARDS.Deck();
-        this.deck.shuffle();
+        this.deck = new cards.Deck();
+        this.shuffle();
     }
 
     deal(players, numCards){
@@ -69,16 +69,20 @@ class Dealer extends Player {
         }
     }
 
+    shuffle(){
+        cards.shuffle(this.deck);
+    }
+
     // TODO: Rename this method: dealCard?
     giveCard(player) {
         player.receiveCard(this.deck.pop());
     }
 }
 
-class Hand {
-    constructor(card1, card2){
-        this.cards = Array.prototype.slice.call(arguments);
-        this._calcValue();
+class Hand extends cards.CardSet {
+    constructor(){
+        super();
+        //this.cards = Array.prototype.slice.call(arguments);
     }
 
     isPontoon(){
@@ -97,36 +101,16 @@ class Hand {
         return this.cards.filter(c => c.rank === Rank.ACE);
     }
 
-    addCard(card){
-        this.cards.push(card);
-    }
-
-    // The value of a card may depend on the current value of the overall hand
-    cardValue(card){
-        let cardVal = Rank[card.rank]; // Most cards have the same value as their rank
-
-        if (card.rank === Rank.JACK || card.rank === Rank.QUEEN || card.rank === Rank.KING){
-            cardVal = 10;
-        } else if (card.rank === Rank.ACE){
-            cardVal = 1;
-            //if (this._value <= 10) value = 11;
-        }
-        return cardVal;
-    }
-
     get value(){
         this._calcValue();
         return this._value;
     }
 
-    get cardCount(){
-        return this.cards.length;
-    }
-
+    // The value of a card may depend on the current value of the overall hand
     _calcValue(){
         this._value = 0;
-        this.cards.forEach(c => this._value += this.cardValue(c));
-        //this._value = this.cards.reduce((prev, curr) => this.cardValue(prev) + this.cardValue(curr));
+        this.cards.forEach(c => this._value += Pontoon.cardValue(c));
+        //this._value = this.cards.reduce((prev, curr) => Pontoon.cardValue(prev) + Pontoon.cardValue(curr));
 
         this.aces().forEach(a => {
             if (this._value <= 11) this._value += 10;
@@ -145,6 +129,17 @@ class Pontoon {
         this.players = [this.dealer].concat(players);
         this.minStake = 1;
         this.maxStake = 100;
+    }
+
+    // The value of a card in Pontoon. Assume Aces are low by default, as the player can later decides whether to go high
+    static cardValue(card){
+        let cardVal = card.rank;
+        if (card.rank === Rank.JACK || card.rank === Rank.QUEEN || card.rank === Rank.KING){
+            cardVal = 10;
+        } else if (card.rank === Rank.ACE){
+            cardVal = 1;
+        }
+        return cardVal;
     }
 
     play(){
@@ -184,7 +179,7 @@ class Pontoon {
                 playerMove = player.play();
                 console.log(player.name + ": " + playerMove);
 
-                if (playerMove === Move.TWIST && player.hand.cardCount <= 5){
+                if (playerMove === Move.TWIST && player.hand.count() <= 5){
                     this.dealer.giveCard(player);
                     console.log(player.name + " got a " + player.hand.cards[player.hand.cards.length-1]);
                 }
@@ -218,7 +213,7 @@ class Pontoon {
             });
         } else {
             // Dealer pays out to players with a higher score. Pontoons and FiveCardTricks get double stake. Everyone else loses a single stake
-            let dealerWins = true; // unless someone has a higher hand, the dealer will win.
+            let dealerWins = true; // unless someone has a better hand, the dealer will win.
             players.forEach((player) => {
                 if (player.score > this.dealer.score && player.hand.isBust() === false) {
                     if (player.hand.isPontoon() || player.hand.isFiveCardTrick()){
@@ -244,7 +239,6 @@ class Pontoon {
         this._pontoonOccurred = false;
         this.winners = [];
     }
-
 
     toString(){
         return this.players.join(" | ");
