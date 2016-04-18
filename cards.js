@@ -5,6 +5,16 @@ let math = require("./math.js");
 const Suit = Object.freeze({ HEARTS: "Hearts", DIAMONDS: "Diamonds", CLUBS: "Clubs", SPADES: "Spades"});
 const Rank = Object.freeze({ JOKER: "Joker", ACE: "Ace", 2: 2, 3: 3, 4: 4, 5: 5, 6: 6, 7: 7, 8: 8, 9: 9, 10: 10, JACK: "Jack", QUEEN: "Queen", KING: "King" });
 
+// Exceptions
+class CardGameError extends Error {
+  constructor(message) {
+    super(message);
+    this.message = message;
+    this.name = this.constructor.name;
+  }
+}
+
+// Functions
 var shuffle = function(cardSet) {
     for (let i = 0; i < cardSet.cards.length; i++){
         let rndIndex = math.randomInt(0, cardSet.cards.length-1);
@@ -33,7 +43,6 @@ class Card {
 }
 
 class CardSet {
-
     constructor(cards){
         if (cards){
             this.cards = cards;
@@ -43,19 +52,11 @@ class CardSet {
     }
 
     pop() {
-        let card = this.cards.pop();
-        if (card === undefined){
-            throw new Error("Deck is empty");
-        }
-        return card;
+        return this.cards.pop();
     }
 
     shift(){
-        let card = this.cards.shift();
-        if (card === undefined){
-            throw new Error("Deck is empty");
-        }
-        return card;        
+        return this.cards.shift();      
     }
 
     append(card){
@@ -81,7 +82,6 @@ class CardSet {
 }
 
 class Deck extends CardSet { 
-
     constructor(config){
         super();
         // Build standard 52 cards
@@ -101,4 +101,4 @@ class Deck extends CardSet {
     }
 }
 
-module.exports = { Deck : Deck, CardSet : CardSet, Card : Card, Suit : Suit, Rank : Rank, shuffle : shuffle};
+module.exports = { Deck : Deck, CardSet : CardSet, Card : Card, Suit : Suit, Rank : Rank, shuffle : shuffle, CardGameError : CardGameError};
