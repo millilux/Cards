@@ -1,0 +1,23 @@
+{
+  "name": "cards",
+  "version": "0.1.0",
+  "description": "Card games",
+  "main": "main.js",
+  "dependencies": {},
+  "devDependencies": {
+    "jest-cli": "^11.0.2"
+  },
+  "scripts": {
+    "test": "jest"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/onefourtwoeightfiveseven/Cards.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/onefourtwoeightfiveseven/Cards/issues"
+  },
+  "homepage": "https://github.com/onefourtwoeightfiveseven/Cards#readme"
+}
