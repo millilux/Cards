@@ -1,9 +1,9 @@
 "use strict";
 
-let PONTOON = require('./pontoon.js');
+let pontoon = require('./pontoon.js');
 
-let player1 = new PONTOON.Player("Mike");
-let player2 = new PONTOON.Player("Bill");
-let pontoon = new PONTOON.Game([player1, player2]);
-pontoon.toString();
-pontoon.play();
+let player1 = new pontoon.Player("Mike");
+let player2 = new pontoon.Player("Bill");
+let game = new pontoon.Game([player1, player2]);
+game.toString();
+game.play();
