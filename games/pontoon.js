@@ -1,7 +1,7 @@
 "use strict";
 
-let cards = require("./cards.js");
-let math = require("./math.js");
+let cards = require("../cards.js");
+let math = require("../math.js");
 const Rank = cards.Rank;
 
 const Move = Object.freeze({ PONTOON: "Pontoon", TWIST: "Twist", STICK: "Stick", BUST: "Bust" });

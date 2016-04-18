@@ -1,6 +1,6 @@
 "use strict";
 
-let pontoon = require('./pontoon.js');
+let pontoon = require('./games/pontoon.js');
 
 let player1 = new pontoon.Player("Mike");
 let player2 = new pontoon.Player("Bill");
