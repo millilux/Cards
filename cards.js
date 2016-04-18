@@ -1,25 +1,9 @@
 "use strict";
+let math = require("./math.js");
 
 // Enums
 const Suit = Object.freeze({ HEARTS: "Hearts", DIAMONDS: "Diamonds", CLUBS: "Clubs", SPADES: "Spades"});
 const Rank = Object.freeze({ JOKER: "Joker", ACE: "Ace", 2: 2, 3: 3, 4: 4, 5: 5, 6: 6, 7: 7, 8: 8, 9: 9, 10: 10, JACK: "Jack", QUEEN: "Queen", KING: "King" });
-
-// Utils
-Math.randomInt = function (min, max){
-    return Math.floor(Math.random()*(max-min+1)+min);
-};
-
-Math.lerp = function (a, b, t) {
-    return (1-t)*a + t*b;
-};
-
-Math.map = function(value, inputMin, inputMax, outputMin, outputMax){
-     return ((value - inputMin) / (inputMax - inputMin) * (outputMax - outputMin) + outputMin);
-}
-
-Math.clamp = function(value, min, max){
-    return Math.min(Math.max(value, min), max);
-}
 
 // Classes
 class Card {
@@ -60,7 +44,7 @@ class Deck {
 
     shuffle() {
         for (let i = 0; i < this.cards.length; i++){
-            let rndIndex = Math.randomInt(0, this.cards.length-1);
+            let rndIndex = math.randomInt(0, this.cards.length-1);
             let tmp = this.cards[i];
             this.cards[i] = this.cards[rndIndex];
             this.cards[rndIndex] = tmp;

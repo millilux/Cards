@@ -1,6 +1,7 @@
 "use strict";
 
-var CARDS = require("./cards.js");
+let CARDS = require("./cards.js");
+let math = require("./math.js");
 const Rank = CARDS.Rank;
 
 const Move = Object.freeze({ PONTOON: "Pontoon", TWIST: "Twist", STICK: "Stick", BUST: "Bust" });
@@ -21,7 +22,7 @@ class Player {
             return Move.BUST;
         }
 
-        let risk = 1 - Math.clamp(Math.map(this.score, 15, 21, 0, 1), 0, 1); // As the score gets closer to 21, less risk should be taken
+        let risk = 1 - math.clamp(math.map(this.score, 15, 21, 0, 1), 0, 1); // As the score gets closer to 21, less risk should be taken
         if (this.score <= 15 || Math.random() < this.riskiness * risk)
             return Move.TWIST;
 
@@ -125,6 +126,7 @@ class Hand {
     _calcValue(){
         this._value = 0;
         this.cards.forEach(c => this._value += this.cardValue(c));
+        //this._value = this.cards.reduce((prev, curr) => this.cardValue(prev) + this.cardValue(curr));
 
         this.aces().forEach(a => {
             if (this._value <= 11) this._value += 10;
