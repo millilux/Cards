@@ -1,22 +1,31 @@
-jest.unmock('../lib/cards');
+jest.unmock('../lib/cardset');
+jest.unmock('../lib/card');
 
-const cards = require('../lib/cards');
-const Suit = cards.Suit;
-const Rank = cards.Rank;
+const CardSet = require('../lib/cardset');
 
 describe('append', () => {
-    it('can append 1 card', () => {
-        let cardSet = new cards.CardSet();
-        let deck = new cards.Deck();
-        cardSet.append(deck.pop());
-        expect(cardSet.count()).toBe(1);
-    });
+  it('can append 1 card', () => {
+    const cardSet = new CardSet();
+    cardSet.append({});
+    expect(cardSet.count()).toBe(1);
+  });
 
-    it('can append multiple cards', () => {
-        let cardSet = new cards.CardSet();
-        let deck = new cards.Deck();
-        let i = 5;
-        while (i--) cardSet.append(deck.pop());
-        expect(cardSet.count()).toBe(5);
-    });
+  it('can append multiple cards', () => {
+    const cardSet = new CardSet();
+    cardSet.append({}, {});
+    expect(cardSet.count()).toBe(2);
+  });
+});
+
+
+describe('iterator', () => {
+  it('iterates over 5 cards', () => {
+    const cardSet = new CardSet();
+    cardSet.append(1, 2, 3, 4, 5);
+    let i = 0;
+    for (const card of cardSet) {
+      i += 1;
+    }
+    expect(i).toBe(5);
+  });
 });

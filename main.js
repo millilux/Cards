@@ -1,9 +1,10 @@
-"use strict";
+require('babel-polyfill');
+const pontoon = require('./lib/pontoon/pontoon.js');
+const Player = require('./lib/player.js');
 
-let pontoon = require('./lib/games/pontoon.js');
-
-let player1 = new pontoon.Player("Mike");
-let player2 = new pontoon.Player("Bill");
-let game = new pontoon.Game([player1, player2]);
-game.toString();
+const player1 = new Player('Mike');
+const player2 = new Player('Bill');
+player1.setAI(new pontoon.AI());
+player2.setAI(new pontoon.AI());
+const game = new pontoon.Game([player1, player2]);
 game.play();
